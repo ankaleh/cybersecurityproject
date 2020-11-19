@@ -1,0 +1,20 @@
+# PyBuilder
+target/
+
+
+### Django ###
+*.log
+*.pot
+*.pyc
+pages/__pycache__/
+local_settings.py
+
+.env
+db.sqlite3
+
+### Python ###
+# Byte-compiled / optimized / DLL files
+cybersecurityproject/__pycache__/
+*.py[cod]
+
+cybersecurityproject/settings.py
