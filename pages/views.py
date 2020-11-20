@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import *
 
+
 # Create your views here.
 def index(request):
     return HttpResponse("Hello, world. You're at the pages index.")
@@ -21,12 +22,18 @@ def signInView(request):
 
 def login(request):
     personLoggedIn = Person.objects.get(email=request.GET.get('email'), password=request.GET.get('password'))
-    return redirect('/pages/')
+    return redirect('/pages/myreservations/{}'.format(personLoggedIn.id))
+
+def logout(request):
+    request.session.flush()
+    return redirect('/pages/signin')
+
 
 def myReservationsView(request, person_id):
     person = Person.objects.get(id=person_id)
     reservations = Reservation.objects.filter(person=person)
-    return redirect('/pages/')
+    return render(request, 'pages/myreservations.html', {'reservations': reservations,'person': person})
+
 
 
 
