@@ -3,34 +3,68 @@
     <head>
         <title>Reservations</title>
     </head>
-    <form action='/pages/logout/' method="POST">
+    <p>Logged in {{ person }}</p>
+    <form action="/pages/logout/" method="POST">
         {% csrf_token %}
         <input type="submit" value="Log out" />
     </form>
 
     <body>
+        {% if reservations %}
+        <h2>Here are your current reservations</h2>
+                <ul>
+                    {% for reservation in reservations %}
+                    <li>
+                        <b>Booked cottage:</b><span id='cottage'>{{reservation.cottage.name}}</span><br/>
+                        <b>Check-in date:</b> <span id='dateFrom'>{{reservation.date_from}}</span><br/>
+                        <b>Check-out date:</b> <span id='dateTo'>{{reservation.date_to}}</span><br/>
+                        <form action="{% url 'cancel' reservation.id %}" method="POST">
+                            {% csrf_token %}
+                            <input type="submit" value="Cancel reservation">
+                        </form>
+                    </li>
+                    {% endfor %}
+                </ul>
+        {% else %}
+            <p></p>
+        {% endif %}
+            
+        <h2>Book a cottage - our wonderful cottages are waiting for you!</h2></h2>
+            <form action="/pages/book/" method="GET">
+                <span><b>Cottage</b></span>
+                <select name="cottage">
+                        {% for cottage in cottages %}
+                            <option value="{{cottage.name}}">Cottage: {{cottage.name}} Rent per day: {{cottage.rent}}</option>
+                        {% endfor %}
+                </select><br/>
+                <br/>
+                <span><b>Check-in date</b></span><input type="date" name="dateFrom"></td><br/>
+                <br/>
+                <span><b>Check-out date</b></span><input type="date" name="dateTo"></td><br/>
+                <br/>
+                <input type="submit" value="Book"></td>
+            </form>
+            
+            <h2>Review us!</h2>
+            <span> Note! If you want to reserve an answer, please send email.</span><br/>
+            <br/>
+            <form action='/pages/message/' method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <span><b>Your name or nickname:</b> <input type="text" name="sender" /><br/>
+                <span><b>Your message:</b><br/>
+                    <textarea name="content" cols="40" rows="5"></textarea><br/>   
+                <input type="submit" value="Send"/>
+            </form>
 
-        <h2>Welcome! Here are your current reservations.</h2>
+            <h3>Reviews</h3>
+            {% for message in messages %}
+                    <li>
+                        <span><b>From:</b> {{message.sender}}</span><br/>
+                        <b>Message:</b> {{message.content|safe}}<br/>
+                        
+                    </li>
+                {% endfor %}
 
-        
-        <form action= >
-            <table>
-                <tr>
-                    
-                </tr>
-
-                <tr>
-                    
-                </tr>
-                
-                <tr>
-                    
-                </tr>
-
-            </table>
-        </form>
-
-        <h2>Our wonderful cottages are waiting for you!</h2>
 
     </body>
 </html>

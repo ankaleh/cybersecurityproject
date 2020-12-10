@@ -5,12 +5,12 @@ class Person(models.Model):
     name = models.TextField()
     email = models.TextField()
     password = models.TextField()
+    ssn = models.TextField(default="")
     
 
 class Message(models.Model):
-    text = models.CharField(max_length=200)
-    sent_from = models.ForeignKey(Person, on_delete=models.CASCADE)
-    likes = models.IntegerField(default=0)
+    content = models.TextField()
+    sender = models.TextField(default="")
 
 class Cottage(models.Model):
     name = models.TextField()
@@ -22,7 +22,5 @@ class Reservation(models.Model):
     person = models.ForeignKey(Person, on_delete=models.CASCADE)
     date_from = models.DateField()
     date_to = models.DateField()
+    count = models.IntegerField(default=0)
     #paid = models.BooleanField(default=False)
-
-
-

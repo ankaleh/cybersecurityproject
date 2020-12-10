@@ -9,7 +9,8 @@
 
         <h2>Sign up! We are creating an account for you and after that you are able to make a cottage reservation!</h2>
         
-        <form action='/pages/register/' method='GET'>
+        <form action='/pages/register/' method='POST'>
+            {% csrf_token %}
             <table>
                 <tr>
                     <th style="text-align:left">Type your name:</th> 

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Thank you</title>
+    </head>
+
+
+    <body>
+
+        <h2>Thank you for your reservation! Your reservation:</h2>
+        <p><b>Cottage:</b>{{cottage.name}}<br/></p>
+        <b>Check-in date:</b> {{dateFrom}}<br/>
+        <b>Check-out date:</b> {{dateTo}}<br/>
+        <p>You have to pay {{count}} euros. We will invoice you via email {{person.email}}. </p>
+            Please type your social security number below. 
+            We need it for invoicing.</p>
+                
+        <form action="/pages/confirm/" method="POST">
+            {% csrf_token %}
+            <input type="text" name="ssn"/>
+            <input type="submit" value="Confirm"/>
+        </form>
+        <form action="{% url 'myreservations' person.id %}" method="GET">
+            <input type="submit" value="Cancel"/>
+        </form>
+
+    </body>
+</html>

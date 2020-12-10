@@ -9,7 +9,8 @@
 
         <h2>Sign in!</h2>
         
-        <form action='/pages/login/' method='GET'>
+        <form action='/pages/login/' method='POST'>
+            {% csrf_token %}
             <table>
                 <tr>
                     <th style="text-align:left">Type your email: </th>
