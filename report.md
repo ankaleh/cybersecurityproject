@@ -13,7 +13,7 @@ You need Python and Django libraries installed on your computer (see Cyber Secur
 `python3 manage.py runserver`
 5) Two users are already registered on the website. You can sign in (path /pages/signin/)  as Donald Duck (email: donald.duck@duckburg.burg, password: donald) or as Fethry Duck (email: fethry.duck@duckburg.burg, password: fethry) or you can create a new user on the path /pages/signup/. 
 
-FLAW 1) Security Misconfiguration: 
+**FLAW 1) Security Misconfiguration:**
 Includes a wide range of issues from insecure configurations and outdated software libraries to very poor passwords. 
 
 Description of flaw 1
@@ -22,7 +22,7 @@ Cottage application's admin username is "admin" and password is "cottages" that 
 How to fix it
 Admin username and password should be changed into stronger ones and the application could use Django authentication systems (see flaw 2).
 
-FLAW 2) Broken Authentication: 
+**FLAW 2) Broken Authentication:**
 Application's authentication and session management are often implemented incorrectly allowing attackers to compromise passwords, keys, or session tokens, or to exploit other implementation flaws to impersonate other users.
 
 Description of flaw 2
@@ -33,7 +33,7 @@ Furthermore, the application has a predictable sessionid generation instead of u
 How to fix it
 The application could use Django authentication system that provides both authentication and authorization features, e.g. User objects with hashed password field and login function that saves the user’s ID in the session using Django’s session framework, logout function,  login_required() decorator etc. 
 
-FLAW 3) Cross-Site-Scripting (XSS): 
+**FLAW 3) Cross-Site-Scripting (XSS):**
 XSS flaws make it possible to execute malicious content on the machine of another user. The threat is related for example to session hijacking, defacing web sites and redirecting the user to malicious sites. 
 
 Description of flaw 3
@@ -44,8 +44,7 @@ Message function doesn't check if the user is authenticated. There are vulnerabi
 How to fix it
 Safe tag should be removed. All input should be validated . All forms should use POST request with Django's CSRF template tag instead of GET request.
 
-FLAW 4) 
-Broken Access Control: 
+**FLAW 4) Broken Access Control:**
 Web application does not restrict on what authenticated users are allowed to do. So, authenticated user may access for example other users' accounts and even modify other users' data or change access rights.
 
 Description of flaw 4
@@ -68,17 +67,17 @@ Further, the code below should prevent that user can not cancel reservations on 
 ```
 def cancel(request, reservation_id):
 
-#code
+    #code
 
-personId = request.session['person']
-person = Person.objects.get(id=personId)
-if reservation.person != person:
-	return HttpResponse("No rights!")
-else: 
-	#code
+    personId = request.session['person']
+    person = Person.objects.get(id=personId)
+    if reservation.person != person:
+	    return HttpResponse("No rights!")
+    else: 
+	    #code
 
-reservation.delete()
-return HttpResponse("Thank you! Your reservation is cancelled.")
+        reservation.delete()
+        return HttpResponse("Thank you! Your reservation is cancelled.")
 ````
 
 In addition, it would be safer if id numbers were not auto-incremented integers.  In Django it is possible to specify a custom primary key that could be more arbitrary than automatically generated keys.
@@ -87,8 +86,8 @@ Even if broken access controll allows authenticated user view other users' page 
 
 The application should use POST request method instead of GET request method in the booking form because GET request method is more vulnerable.  The Django's CSRF template tag, that is mandatory with POST requests in Django, protects against Cross Site Request Forgeries. (Still, the application makes it possible to steal the tag via review feature, see flaw 3).
 
-FLAW 5)
-Sensitive Data Exposure: Web application does not properly protect sensitive data, such as personally identifiable information. This kind of information should not be saved in database without encryption and other protection and requires special precautions when exchanged with the browser. 
+**FLAW 5) Sensitive Data Exposure:**
+Web application does not properly protect sensitive data, such as personally identifiable information. This kind of information should not be saved in database without encryption and other protection and requires special precautions when exchanged with the browser. 
 
 Description of flaw 5
 The application asks customer's social security number for invoicing when the customer is confirming his reservation. Social security numbers are saved in database without encryption. 
@@ -100,7 +99,7 @@ The company sends invoices via email, that increases the threat.
 How to fix it
 The feature should be removed. There is not at all need for using personal identity codes in this application. The application only saves ssn in the database and doesn't use it. 
 
-Sources: 
+**Sources:**
 "Django documentation", https://docs.djangoproject.com/en/3.1/.
 "Top 10 Web Application Security Risks", https://owasp.org/www-project-top-ten/. The Open Web Application Security Project (OWASP).
 "Personal identity codes not to be used on invoices", https://tietosuoja.fi/en/-/henkilotunnusta-ei-tule-kayttaa-laskuissa. Office Of The Data Protection Ombudsman 1.6.2020, read 8.12.2020.
