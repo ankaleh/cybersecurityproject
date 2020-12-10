@@ -7,10 +7,10 @@ You need Python and Django libraries installed on your computer (see Cyber Secur
 0) Open the command prompt.
 1) Go to the directory where you want to clone the repository.
 2) Clone the repository:
-git clone https://github.com/ankaleh/cybersecurityproject
+`git clone https://github.com/ankaleh/cybersecurityproject`
 3) Go to the repository cybersecurity, where you should see manage.py file.
 4) Run the application:
-python3 manage.py runserver
+`python3 manage.py runserver`
 5) Two users are already registered on the website. You can sign in (path /pages/signin/)  as Donald Duck (email: donald.duck@duckburg.burg, password: donald) or as Fethry Duck (email: fethry.duck@duckburg.burg, password: fethry) or you can create a new user on the path /pages/signup/. 
 
 FLAW 1) Security Misconfiguration: 
@@ -56,14 +56,16 @@ The best protection against broken access vulnerabilities would be to use Django
 
 However, the code below should prevent access to other users' page. It reads the session attribute and checks if the request.session[person] (value set in login function) has the right value, i.e. it is the same as the value of person_id that is in the url path:
 
+```
 def myReservationsView(request, person_id): 
 	person = Person.objects.get(id=person_id)
 	personId = request.session['person'] #value set in login function
 	if personId != person_id: 
 		return HttpResponse("No rights!")
-
+```
 Further, the code below should prevent that user can not cancel reservations on other users' behalf. It checks if the person in request.session[person] is the same that in the reservation: 
 
+```
 def cancel(request, reservation_id):
 
 #code
@@ -77,6 +79,7 @@ else:
 
 reservation.delete()
 return HttpResponse("Thank you! Your reservation is cancelled.")
+````
 
 In addition, it would be safer if id numbers were not auto-incremented integers.  In Django it is possible to specify a custom primary key that could be more arbitrary than automatically generated keys.
 
