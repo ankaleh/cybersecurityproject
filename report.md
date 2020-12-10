@@ -33,7 +33,7 @@ Furthermore, the application has a predictable sessionid generation instead of u
 How to fix it
 The application could use Django authentication system that provides both authentication and authorization features, e.g. User objects with hashed password field and login function that saves the user’s ID in the session using Django’s session framework, logout function,  login_required() decorator etc. 
 
-FLAW 3: Cross-Site-Scripting (XSS): 
+FLAW 3) Cross-Site-Scripting (XSS): 
 XSS flaws make it possible to execute malicious content on the machine of another user. The threat is related for example to session hijacking, defacing web sites and redirecting the user to malicious sites. 
 
 Description of flaw 3
