@@ -3,4 +3,4 @@ This repository is for the first project of Cyber Security Base course (see http
 
 The application is for booking holiday home. User can sign up and after that he is able to choose a cottage, book it and review it after the holiday. 
 
-Please read report.md that describes the security flaws of the application.
+**Please read report.md that describes the security flaws of the application.**
