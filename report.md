@@ -1,14 +1,15 @@
 Link to the repository
 https://github.com/ankaleh/cybersecurityproject
 
-Installation instructions 
+**Installation instructions**
+
 You need Python and Django libraries installed on your computer (see Cyber Security Base 2020 course's installation guide: https://cybersecuritybase.mooc.fi/installation-guide).
 
 0) Open the command prompt.
 1) Go to the directory where you want to clone the repository.
 2) Clone the repository:
 `git clone https://github.com/ankaleh/cybersecurityproject`
-3) Go to the repository cybersecurity, where you should see manage.py file.
+3) Go to the directory cybersecurity, where you should see manage.py file.
 4) Run the application:
 `python3 manage.py runserver`
 5) Two users are already registered on the website. You can sign in (path /pages/signin/)  as Donald Duck (email: donald.duck@duckburg.burg, password: donald) or as Fethry Duck (email: fethry.duck@duckburg.burg, password: fethry) or you can create a new user on the path /pages/signup/. 
@@ -31,7 +32,7 @@ Application's authentication and session management are often implemented incorr
 
 Cottage application's authentication and authorization systems are unsafe. The application stores for example the users' passwords in plain-text format. It doesn't use Django authentication system that would protect against many of the threats related to authentication.
 
-Furthermore, the application has a predictable sessionid generation instead of using random sessionid cookies created by Django that enables session hijacks.
+Furthermore, the application has a predictable sessionid generation instead of using random sessionid cookies created by Django that makes it very vulnerable against session hijacks.
 
 *How to fix it*
 
@@ -42,13 +43,13 @@ XSS flaws make it possible to execute malicious content on the machine of anothe
 
 *Description of flaw 3*
 
-Cottage application doesn't validate any inputs. In addition, it has a review feature that allows user send a review via form that is implemented incorrectly. The form uses Django's safe template tag that marks a string as not requiring further HTML escaping prior to output. That enables an attacker to send malicious scripts to the server. In addition, the application saves the reviews in the database and all of them end up on users' browsers.
+Cottage application doesn't validate any inputs. In addition, it has a review feature that allows user send a review via form that is implemented incorrectly. The form uses Django's safe template tag that marks a string as not requiring further HTML escaping prior to output. That makes it possible to send malicious scripts to the server: the application saves the reviews in the database and fetches all of them when myreservations page is opened. All reviews end up on all users' browsers.
 
 Message function doesn't check if the user is authenticated. There are vulnerabilities related to access control, too (see flaw 4), so whoever surfing the Internet is able to send a message. 
 
 *How to fix it*
 
-Safe tag should be removed. All input should be validated . All forms should use POST request with Django's CSRF template tag instead of GET request.
+Safe tag should be removed. All input should be validated. All forms should use POST request with Django's CSRF template tag instead of GET request.
 
 **FLAW 4) Broken Access Control:**
 Web application does not restrict on what authenticated users are allowed to do. So, authenticated user may access for example other users' accounts and even modify other users' data or change access rights.
@@ -92,22 +93,27 @@ In addition, it would be safer if id numbers were not auto-incremented integers.
 
 Even if broken access controll allows authenticated user view other users' page and remove their reservations he is not directly able to make reservation on other users' behalf because the application gets customer of a new reservation on the basis of the value of  request.session['person'] that is set in login function. It is still possible indirectly for example via XXS (see flaw 3, the review feature).
 
-The application should use POST request method instead of GET request method in the booking form because GET request method is more vulnerable.  The Django's CSRF template tag, that is mandatory with POST requests in Django, protects against Cross Site Request Forgeries. (Still, the application makes it possible to steal the tag via review feature, see flaw 3).
+The application should use POST request method instead of GET request method in the booking form because GET request method is more vulnerable.  The Django's CSRF template tag, that is included to POST requests in Django, protects against Cross Site Request Forgeries. (Still, the application makes it possible to steal the tag via review feature, see flaw 3).
 
 **FLAW 5) Sensitive Data Exposure:**
 Web application does not properly protect sensitive data, such as personally identifiable information. This kind of information should not be saved in database without encryption and other protection and requires special precautions when exchanged with the browser. 
 
 *Description of flaw 5*
+
 The application asks customer's social security number for invoicing when the customer is confirming his reservation. Social security numbers are saved in database without encryption. 
 
-In fact, using ssn to identify customer is against the recently given order by the finnish Data Protection Ombudsman. According to that, organisations and companies must not use social security numbers to identify their customers on invoices.
+In fact, using ssn on invoices is against the recently given order by the finnish Data Protection Ombudsman. According to that, organisations and companies must not use social security numbers to identify their customers on invoices.
 
 The company sends invoices via email, that increases the threat.
 
 *How to fix it*
+
 The feature should be removed. There is not at all need for using personal identity codes in this application. The application only saves ssn in the database and doesn't use it. 
 
 **Sources:**
+
 "Django documentation", https://docs.djangoproject.com/en/3.1/.
+
 "Top 10 Web Application Security Risks", https://owasp.org/www-project-top-ten/. The Open Web Application Security Project (OWASP).
+
 "Personal identity codes not to be used on invoices", https://tietosuoja.fi/en/-/henkilotunnusta-ei-tule-kayttaa-laskuissa. Office Of The Data Protection Ombudsman 1.6.2020, read 8.12.2020.
